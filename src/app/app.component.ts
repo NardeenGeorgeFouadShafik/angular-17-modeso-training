@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { CourseCardComponent } from './course-card/course-card.component';
@@ -15,9 +15,15 @@ import { Observable } from 'rxjs';
   styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
+
   courses$: Observable<Course[]>;
   courses: Course[] = [];
   display: boolean = false;
+  counterSignal = signal(0);
+  drivedCounter = computed(() => {
+    const drivedCounter = this.counterSignal();
+    return drivedCounter * 10;
+  })
   constructor(private http: HttpClient) {
     this.courses$ = this.http.get(
       "http://localhost:9000/api/courses"
@@ -37,4 +43,8 @@ export class AppComponent implements OnInit {
   showData() {
     this.display = true;
   }
+
+    increment() {
+  this.counterSignal.update(val=>val+1)
+}
 }

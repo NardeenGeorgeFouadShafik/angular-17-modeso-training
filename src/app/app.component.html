@@ -1,6 +1,10 @@
 <div>
   <div class="pre-content" #performPrefetch>
     <button (click)="showData()">Display All Courses</button>
+        <button (click)="increment()">increment</button>
+<h3>counter : {{counterSignal()}}</h3>
+<h3>drived counter : {{drivedCounter()}}</h3>
+
   </div>
   @defer(when display; prefetch on hover(performPrefetch)) {
   <div class="courses">

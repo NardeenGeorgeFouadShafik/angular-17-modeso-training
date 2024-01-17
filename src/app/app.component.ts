@@ -8,28 +8,33 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
   imports: [CourseCardComponent, CommonModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  templateUrl: "./app.component.html",
+  styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
   courses$: Observable<Course[]>;
   courses: Course[] = [];
+  display: boolean = false;
   constructor(private http: HttpClient) {
     this.courses$ = this.http.get(
-      'http://localhost:9000/api/courses'
+      "http://localhost:9000/api/courses"
     ) as Observable<Course[]>;
   }
 
-  title = 'angular-core-training';
+  title = "angular-core-training";
 
   ngOnInit(): void {}
   onEditCourse() {
-/*
+    /*
+}
     const newCourse = { ...this.courses$[0] };
     newCourse.description = 'test';
     this.courses$[0] = newCourse;*/
+  }
+  showData() {
+    this.display = true;
   }
 }

@@ -1,4 +1,8 @@
 <div>
+  <div class="pre-content" #performPrefetch>
+    <button (click)="showData()">Display All Courses</button>
+  </div>
+  @defer(when display; prefetch on hover(performPrefetch)) {
   <div class="courses">
     @for (course of courses$ | async ; track course.id) {
     <app-course-card class="salmon-theme" [course]="course">
@@ -8,5 +12,11 @@
     } @empty {
     <span>No courses available </span>}
   </div>
-</div>/modesoventures
-<button (click)="onEditCourse()">add course</button>
+  } @loading {
+  <h3>spinner loading</h3>
+  }
+  @placeholder {
+  <h3>spinner placeholder</h3>
+  } 
+  <!--<button (click)="onEditCourse()">add course</button>-->
+</div>

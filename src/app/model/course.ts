@@ -5,6 +5,6 @@ export interface Course {
     description:string;
     iconUrl: string;
     longDescription: string;
-    category:string;
+    category?:string;
     lessonsCount:number;
 }

@@ -1,0 +1,12 @@
+<div>
+  <div class="courses">
+    @for (course of courses$ | async ; track course.id) {
+    <app-course-card class="salmon-theme" [course]="course">
+      <img [src]="course.iconUrl" />
+      <h3 class="header-style">test view encapsulation</h3>
+    </app-course-card>
+    } @empty {
+    <span>No courses available </span>}
+  </div>
+</div>
+<button (click)="onEditCourse()">add course</button>

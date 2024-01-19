@@ -1,0 +1,23 @@
+.top-menu {
+  background: #1976d2;
+  padding: 2px 15px;
+}
+
+.logo {
+  max-height: 55px;
+}
+
+.courses {
+  max-width: 400px;
+  margin: 50px auto;
+}
+
+.salmon-theme ::ng-deep .course-card {
+  background: lightsalmon;
+}
+.pre-content {
+  min-height: 500px;
+  margin: 10px;
+  padding: 10px;
+  border: 5px solid red;
+}

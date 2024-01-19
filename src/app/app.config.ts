@@ -7,14 +7,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { provideServiceWorker } from '@angular/service-worker';
+import routeConfig from './routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    importProvidersFrom(BrowserModule, BrowserAnimationsModule, HttpClientModule, CommonModule, RouterOutlet),
-    provideServiceWorker('ngsw-worker.js', {
-        enabled: !isDevMode(),
-        registrationStrategy: 'registerWhenStable:30000'
-    })
-],
+    importProvidersFrom(
+      BrowserModule,
+      BrowserAnimationsModule,
+      HttpClientModule,
+      CommonModule,
+      RouterOutlet
+    ),
+    provideServiceWorker("ngsw-worker.js", {
+      enabled: !isDevMode(),
+      registrationStrategy: "registerWhenStable:30000",
+    }),
+    provideRouter(routeConfig),
+  ],
 };

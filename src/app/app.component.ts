@@ -1,11 +1,9 @@
-import {
-  Component,
-  OnInit,
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { CourseCardComponent } from "./course-card/course-card.component";
-import { SwUpdate } from "@angular/service-worker";
+import { SwPush, SwUpdate } from "@angular/service-worker";
+import { NotificationService } from "./services/notification.service";
 
 @Component({
   selector: "app-root",
@@ -15,9 +13,12 @@ import { SwUpdate } from "@angular/service-worker";
   styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
-
-  constructor(private swUpdate: SwUpdate) {
-    swUpdate.versionUpdates.subscribe(async (evt) => {
+  constructor(
+    private swUpdate: SwUpdate,
+    private swPush: SwPush,
+    private notificationService: NotificationService
+  ) {
+    this.swUpdate.versionUpdates.subscribe(async (evt) => {
       console.log("UpdateService: versionUpdates", evt);
       switch (evt.type) {
         case "VERSION_DETECTED":
@@ -42,5 +43,14 @@ export class AppComponent implements OnInit {
 
   title = "angular-core-training";
 
-  ngOnInit(): void { }
+  async ngOnInit(): Promise<void> {
+    const sub = await this.swPush.requestSubscription({
+      serverPublicKey:
+        "BBS6UACOCvGimKmBQafg9V3GgpXTCsZUgR8Nn-Lss6jw566Y0NH7hTnw9Xuq8HbXBpPswhb-68HT0X_nXssU6D4",
+    });
+    console.log(sub);
+    this.notificationService
+      .addPushSubscriber(sub)
+      .subscribe(()=> console.log("subscriber added "));
+  }
 }

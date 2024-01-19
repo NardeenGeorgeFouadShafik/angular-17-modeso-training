@@ -5,6 +5,8 @@
     <h3>counter : {{ counterSignal() }}</h3>
     <h3>drived counter : {{ drivedCounter() }}</h3>
   </div>
+      <button (click)="sendNotification()">send Notification</button>
+
   @defer(when display; prefetch on hover(performPrefetch)) {
   <div class="courses">
     @for (course of courses$ | async ; track course.id) {

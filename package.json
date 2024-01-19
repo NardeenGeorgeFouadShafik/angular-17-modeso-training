@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve --proxy-config ./proxy.json --live-reload false",
+    "build": "ng build ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve": "node dist/angular-core-training/server/server.mjs"
+    "serve": "node dist/angular-core-training/server/server.mjs",
+    "start:prod": "ng build --configuration production && cd dist/angular-core-training/browser && http-server -c-1 -P http://localhost:9000 ."
   },
   "private": true,
   "dependencies": {
@@ -20,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/platform-server": "^17.0.0",
     "@angular/router": "^17.0.0",
+    "@angular/service-worker": "^17.0.0",
     "@angular/ssr": "^17.0.10",
     "express": "^4.18.2",
     "rxjs": "~7.8.0",

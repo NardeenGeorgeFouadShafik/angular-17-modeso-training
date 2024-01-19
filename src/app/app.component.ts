@@ -1,11 +1,18 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { CourseCardComponent } from './course-card/course-card.component';
-import { Course } from './model/course';
-import { COURSES } from './db-data';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  computed,
+  signal,
+  ɵprovideZonelessChangeDetection,
+} from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterOutlet } from "@angular/router";
+import { CourseCardComponent } from "./course-card/course-card.component";
+import { Course } from "./model/course";
+import { COURSES } from "./db-data";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { SwUpdate } from "@angular/service-worker";
 
 @Component({
   selector: "app-root",
@@ -15,7 +22,6 @@ import { Observable } from 'rxjs';
   styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
-
   courses$: Observable<Course[]>;
   courses: Course[] = [];
   display: boolean = false;
@@ -23,11 +29,29 @@ export class AppComponent implements OnInit {
   drivedCounter = computed(() => {
     const drivedCounter = this.counterSignal();
     return drivedCounter * 10;
-  })
-  constructor(private http: HttpClient) {
-    this.courses$ = this.http.get(
-      "http://localhost:9000/api/courses"
-    ) as Observable<Course[]>;
+  });
+
+  constructor(private http: HttpClient, private swUpdate: SwUpdate) {
+    this.courses$ = this.http.get("/api/courses") as Observable<Course[]>;
+    swUpdate.versionUpdates.subscribe(async evt => {
+      console.log('UpdateService: versionUpdates', evt);
+      switch (evt.type) {
+        case 'VERSION_DETECTED':
+          console.log(`Downloading new app version: ${evt.version.hash}`);
+          break;
+        case 'VERSION_READY':
+          console.log(`Current app version: ${evt.currentVersion.hash}`);
+          console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
+          await swUpdate.activateUpdate();
+          location.reload();
+          break;
+        case 'VERSION_INSTALLATION_FAILED':
+          console.log(`Failed to install app version '${evt.version.hash}': ${evt.error}`);
+          break;
+      }
+    });
+  
+    
   }
 
   title = "angular-core-training";
@@ -44,7 +68,7 @@ export class AppComponent implements OnInit {
     this.display = true;
   }
 
-    increment() {
-  this.counterSignal.update(val=>val+1)
-}
+  increment() {
+    this.counterSignal.update((val) => val + 1);
+  }
 }

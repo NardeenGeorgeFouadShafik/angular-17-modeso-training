@@ -22,6 +22,7 @@ export class CoursesContainerComponent {
     const drivedCounter = this.counterSignal();
     return drivedCounter * 10;
   });
+  promptEvent: any;
   constructor(
     private http: HttpClient,
     private notificationService: NotificationService
@@ -31,6 +32,10 @@ export class CoursesContainerComponent {
 
   ngOnInit(): void {
     this.courses$ = this.http.get("/api/courses") as Observable<Course[]>;
+    window.addEventListener("beforeinstallprompt", (event) => {
+      console.log(event);
+      this.promptEvent = event;
+    });
   }
   onEditCourse() {
     /*
@@ -48,5 +53,8 @@ export class CoursesContainerComponent {
   }
   sendNotification() {
     this.notificationService.send().subscribe();
+  }
+  install() {
+    this.promptEvent.prompt();
   }
 }

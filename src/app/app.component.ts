@@ -29,8 +29,8 @@ export class AppComponent implements OnInit {
           console.log(
             `New app version ready for use: ${evt.latestVersion.hash}`
           );
-          await swUpdate.activateUpdate();
-          location.reload();
+          //await swUpdate.activateUpdate();
+          // location.reload();
           break;
         case "VERSION_INSTALLATION_FAILED":
           console.log(
@@ -51,6 +51,6 @@ export class AppComponent implements OnInit {
     console.log(sub);
     this.notificationService
       .addPushSubscriber(sub)
-      .subscribe(()=> console.log("subscriber added "));
+      .subscribe(() => console.log("subscriber added "));
   }
 }
